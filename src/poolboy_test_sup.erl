@@ -8,9 +8,7 @@
 %% Supervisor callbacks
 -export([init/1]).
 
-%% Helper macro for declaring children of supervisor
--define(CHILD(I, Type), {I, {I, start_link, []}, permanent, 5000, Type, [I]}).
-
+-include("poolboy_test.hrl").
 %% ===================================================================
 %% API functions
 %% ===================================================================
@@ -23,5 +21,18 @@ start_link() ->
 %% ===================================================================
 
 init([]) ->
-    {ok, { {one_for_one, 5, 10}, []} }.
+    RestartStrategy = one_for_one,
+    MaxRestarts = 10,
+    MaxSecondsBetweenRestarts = 10,
+
+    SupFlags = {RestartStrategy, MaxRestarts, MaxSecondsBetweenRestarts},
+
+    PoolArgs = [
+                {name, {local, ?POOL_NAME}},
+                {worker_module, worker},
+                {size, 1}, {max_overflow, 0}
+                ],
+    PoolSpec = poolboy:child_spec(?POOL_NAME, PoolArgs),
+
+    {ok, {SupFlags, [PoolSpec]}}.
 

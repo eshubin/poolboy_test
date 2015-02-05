@@ -5,7 +5,8 @@
   {registered, []},
   {applications, [
                   kernel,
-                  stdlib
+                  stdlib,
+                  poolboy
                  ]},
   {mod, { poolboy_test_app, []}},
   {env, []}
