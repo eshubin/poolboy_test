@@ -1,0 +1,12 @@
+{application, poolboy_test,
+ [
+  {description, ""},
+  {vsn, "1"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {mod, { poolboy_test_app, []}},
+  {env, []}
+ ]}.
